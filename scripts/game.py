@@ -15,6 +15,8 @@ class Game: # We make the Game code into a class of its own to be called in the 
         pygame.display.set_caption("Ninja Game") # This line of code sets the title of the game as Ninja Game
         self.screen = pygame.display.set_mode((640, 480)) # This line sets the display for the gmae as 640,480 pixels
 
+        self.screen = pygame.Surface((320,240)) 
+
         self.clock = pygame.time.Clock()
 
         self.movement = [False, False]
@@ -27,6 +29,7 @@ class Game: # We make the Game code into a class of its own to be called in the 
             'spawners': load_images('tiles/spawners'),
             'player': load_image('entities/player.png'), # Load the player image using the load_image function from utils.py
             'background': load_image('background.png'),
+            'clouds': load_images('clouds') # Load the cloud images using the load_images function from utils.py
         }
 
         print(self.assets) # This line prints the assets dictionary to the console to check if the images are loaded correctly.
