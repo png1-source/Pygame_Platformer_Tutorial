@@ -7,6 +7,7 @@ import pygame # This line imports the pygame module to actually run the game.
 from scripts.utils import load_image, load_images # This line imports the load_image function from the utils.py file in the scripts folder.
 from scripts.Entities import PhysicsEntity 
 from scripts.tilemap import Tilemap
+from scripts.clouds import Clouds # This line imports the Clouds class from the clouds.py file in the scripts folder. The Clouds class is used to create and manage clouds in the game.
 
 class Game: # We make the Game code into a class of its own to be called in the future
     def __init__(self):
@@ -29,10 +30,12 @@ class Game: # We make the Game code into a class of its own to be called in the 
             'spawners': load_images('tiles/spawners'),
             'player': load_image('entities/player.png'), # Load the player image using the load_image function from utils.py
             'background': load_image('background.png'),
-            'clouds': load_images('clouds') # Load the cloud images using the load_images function from utils.py
+            'clouds': load_images('clouds'), # Load the cloud images using the load_images function from utils.py
         }
 
         print(self.assets) # This line prints the assets dictionary to the console to check if the images are loaded correctly.
+
+        self.clouds = Clouds(self.assets['clouds'], count = 16) # create a Clouds instance with the loaded cloud images
 
         self.player = PhysicsEntity(self, 'player', (50, 50), (8, 15))  # create the player PhysicsEntity: pass game reference, entity type, starting position (x, y), and size (width, height)
 
@@ -48,6 +51,9 @@ class Game: # We make the Game code into a class of its own to be called in the 
             self.scroll[0] +=(self.player.rect().centerx - self.screen.get_width() / 2 - self.scroll[0]) / 30 # The self.screen.get_width part of the code essentially cuts the screen's size by half so that the camera ends up tracking the player and not somewhere else. update horizontal scroll based on player position. As the camera is linked to the player's position
             self.scroll[1] +=(self.player.rect().centery - self.screen.get_height() / 2 - self.scroll[1]) / 30 # update vertical scroll based on player position
             render_scroll = (int(self.scroll[0]), int(self.scroll[1])) # create a tuple of integer scroll values for rendering. This is a key line of code as if we run the game without this code, the player gets jittery as the player's position and tiles position are float values not integer values.
+
+            self.clouds.update() # update the clouds' positions
+            self.clouds.render(self.screen, offset = render_scroll) # render the clouds onto the
 
             self.tilemap.render(self.screen, offset = self.scroll) # render the tilemap onto the screen with the current scroll offset. The scroll offset is the camera position in the game world. 
 
