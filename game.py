@@ -5,7 +5,7 @@ import sys
 import pygame # This line imports the pygame module to actually run the game. 
 
 from scripts.utils import load_image, load_images # This line imports the load_image function from the utils.py file in the scripts folder.
-from scripts.Entities import PhysicsEntity 
+from scripts.entities import PhysicsEntity 
 from scripts.tilemap import Tilemap
 from scripts.clouds import Clouds # This line imports the Clouds class from the clouds.py file in the scripts folder. The Clouds class is used to create and manage clouds in the game.
 
@@ -14,8 +14,8 @@ class Game: # We make the Game code into a class of its own to be called in the 
         pygame.init()
 
         pygame.display.set_caption("Ninja Game") # This line of code sets the title of the game as Ninja Game
-        self.screen = pygame.display.set_mode((640, 480)) # This line sets the display for the gmae as 640,480 pixels
-        self.display = pygame.Surface((320,240)) 
+        self.screen = pygame.display.set_mode((640, 480))
+        self.display = pygame.Surface((320, 240)) 
 
         self.clock = pygame.time.Clock()
 
@@ -44,17 +44,17 @@ class Game: # We make the Game code into a class of its own to be called in the 
         while True:
             self.display.blit(self.assets['background'], (0, 0)) # Draw the background image onto the screen at position (0, 0)
 
-            self.scroll[0] +=(self.player.rect().centerx - self.display.get_width() / 2 - self.scroll[0]) / 30 # The self.display.get_width part of the code essentially cuts the display's size by half so that the camera ends up tracking the player and not somewhere else. update horizontal scroll based on player position. As the camera is linked to the player's position
-            self.scroll[1] +=(self.player.rect().centery - self.display.get_height() / 2 - self.scroll[1]) / 30 # update vertical scroll based on player position
+            self.scroll[0] += (self.player.rect().centerx - self.display.get_width() / 2 - self.scroll[0]) / 30
+            self.scroll[1] += (self.player.rect().centery - self.display.get_height() / 2 - self.scroll[1]) / 30
             render_scroll = (int(self.scroll[0]), int(self.scroll[1])) # create a tuple of integer scroll values for rendering. This is a key line of code as if we run the game without this code, the player gets jittery as the player's position and tiles position are float values not integer values.
 
             self.clouds.update() # update the clouds' positions
-            self.clouds.render(self.display, offset = render_scroll) # render the clouds onto the
+            self.clouds.render(self.display, offset=render_scroll)
 
-            self.tilemap.render(self.display, offset = self.scroll) # render the tilemap onto the display with the current scroll offset. The scroll offset is the camera position in the game world. 
+            self.tilemap.render(self.display, offset = render_scroll) # render the tilemap onto the display with the current scroll offset. The scroll offset is the camera position in the game world. 
 
-            self.player.update(self.tilemap, (self.movement[1] - self.movement[0], 0))  # update player with vertical movement input
-            self.player.render(self.display, offset = self.scroll)  # render player with current scroll offset
+            self.player.update(self.tilemap, (self.movement[1] - self.movement[0], 0))
+            self.player.render(self.display, offset=render_scroll)
            
             
             for event in pygame.event.get():
@@ -73,7 +73,9 @@ class Game: # We make the Game code into a class of its own to be called in the 
                         self.movement[0] = False # Set the first index of the movement list to False
                     if event.key == pygame.K_RIGHT: #` If the key released is the DOWN arrow key
                         self.movement[1] = False    # Set the second index of the movement list to False
-            pygame.display.update() # This just updates the display if it quits. 
+
+            self.screen.blit(pygame.transform.scale(self.display, self.screen.get_size()), (0, 0)) 
+            pygame.display.update() # Update the full display surface to the screen. This is necessary to actually see the changes made to the display surface on the screen.
             self.clock.tick(60) # The clock.tick(60) sets the original FPS of the game as 60 FPS. 
 
 Game().run() # This function runs the game. Without it, the game will not run. It is the essential part of the code. 
