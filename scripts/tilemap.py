@@ -34,13 +34,21 @@ class Tilemap:
          return rects
 
 
-    def render(self,surf, offset=(0,0)): # Render the tilemap onto the provided surface with an optional offset
-            for tile in self.offgrid_tiles:
-                surf.blit(self.game.assets[tile['type']][tile['variant']], (tile['pos'][0] - offset[0], tile['pos'][1] - offset[1])) # Renders offgrid tiles at their pixel positions
-           
-            for loc in self.tilemap:
-                tile = self.tilemap[loc]
+    def render(self,surf, offset=(0,0)): # Render the tilemap onto the provided surface with an optional 
+        for tile in self.offgrid_tiles:  
+            surf.blit(self.game.assets[tile['type']][tile['variant']], (tile['pos'][0] - offset[0], tile['pos'][1] - offset[1])) # Renders offgrid tiles at their pixel positions 
+        
+        
+        for x in range(offset[0] // self.tile_size, (offset[0] + surf.get_width()) // self.tile_size + 1): # Loop through the range of tile coordinates that are visible on the surface based on the offset and surface width
+           for y in range(offset[1] // self.tile_size, (offset[1] + surf.get_height()) // self.tile_size + 1): # Loop through the range of tile coordinates that are visible on the surface based on the offset and surface height
+            loc = str(x) + ';' + str(y) # Create a string key for the tile location
+            if loc in self.tilemap: # Check if the tile exists in the tilemap
+                tile = self.tilemap[loc] # This line of code is the equalivalent of deleted code and increases game performance by only rendering tiles that are visible on the screen instead of rendering all tiles in the tilemap.
                 surf.blit(self.game.assets[tile['type']][tile['variant']], (tile['pos'][0] * self.tile_size - offset[0], tile['pos'][1] * self.tile_size - offset[1])) # Renders each tile at its corresponding position on the surface)
+
+              
+           
+     
 
      
            
