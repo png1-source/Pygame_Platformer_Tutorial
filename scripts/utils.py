@@ -17,5 +17,12 @@ def load_images(path): # The function below retrives the images from a folder us
         images.append(load_image(path + '/' + img_name)) 
     return images
 
+class Animation: # Since there is no premade library for animations in pygame, we have to create our own animation class. This class will handle the animation of our game objects by cycling through a list of images.
+    def __init__(self, images, img_dur = 5, loop = True): # Initialize the animation with a list of images, image duration, and a look flag
+       self.images = images
+       self.loop = loop
+       self.img_duration = img_dur
+       self.done = False
+       self.frame = 0
 
-        
+
