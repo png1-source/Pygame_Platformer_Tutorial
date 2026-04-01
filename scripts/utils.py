@@ -24,5 +24,9 @@ class Animation: # Since there is no premade library for animations in pygame, w
        self.img_duration = img_dur
        self.done = False
        self.frame = 0
+       
+    def copy(self): # The copy function creates a copy of the animation object created above. 
+        return Animation(self.images, self.img_duration, self.loop) # Returns a new instance of the Animation class with the same images, image duration, and loop flag as the original animation object.
+    
 
 
