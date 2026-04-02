@@ -28,5 +28,14 @@ class Animation: # Since there is no premade library for animations in pygame, w
     def copy(self): # The copy function creates a copy of the animation object created above. 
         return Animation(self.images, self.img_duration, self.loop) # Returns a new instance of the Animation class with the same images, image duration, and loop flag as the original animation object.
     
+    def update(self): # The update function is responsible for updating the animation frame. It increments the frame counter and checks if the animation has reached the end of the image list. If it has, it either loops back to the beginning or marks the animation as done, depending on the loop flag.
+        if self.loop:
+            self.frame = (self.frame + 1) % (self.img_duration * len(self.images))
+        else:
+            self.frame = min(self.frame + 1, self.img_duration * len(self.images)) 
+          
+    
+    def img(self):
+        return self.images[int(self.frame / self.img_duration)]
 
 
