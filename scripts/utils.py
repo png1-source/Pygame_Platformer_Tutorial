@@ -32,8 +32,9 @@ class Animation: # Since there is no premade library for animations in pygame, w
         if self.loop:
             self.frame = (self.frame + 1) % (self.img_duration * len(self.images))
         else:
-            self.frame = min(self.frame + 1, self.img_duration * len(self.images)) 
-          
+            self.frame = min(self.frame + 1, self.img_duration * len(self.images) - 1) # We do -1 because the frame index starts at 0, so the last frame is at index len(self.images) - 1. This ensures that the animation stops at the last frame and does not go out of bounds.
+            if self.frame >= self.img_duration * len(self.images) - 1: # This line checks if the animation has reached the last frame. If it has, it sets the done flag to True, indicating that the animation is complete. 
+               self.done = True # The done flag can be used in the game logic to determine when to remove the animation or trigger other events based on the completion of the animation.
     
     def img(self):
         return self.images[int(self.frame / self.img_duration)]

@@ -4,7 +4,7 @@ import sys
 
 import pygame # This line imports the pygame module to actually run the game. 
 
-from scripts.utils import load_image, load_images # This line imports the load_image function from the utils.py file in the scripts folder.
+from scripts.utils import load_image, load_images, Animation # This line imports the load_image function from the utils.py file in the scripts folder.
 from scripts.entities import PhysicsEntity 
 from scripts.tilemap import Tilemap
 from scripts.clouds import Clouds # This line imports the Clouds class from the clouds.py file in the scripts folder. The Clouds class is used to create and manage clouds in the game.
@@ -21,15 +21,22 @@ class Game: # We make the Game code into a class of its own to be called in the 
 
         self.movement = [False, False]
 
-        self.assets = {
+        self.assets = { # Loading all the assets for the game in a dictionary for easy access. They keys of the dictionary are the names of the assets and the values are the loaded images or animations.
             'decor': load_images('tiles/decor'),
             'grass': load_images('tiles/grass'),
             'large_decor': load_images('tiles/large_decor'), 
             'stone': load_images('tiles/stone'),
             'player': load_image('entities/player.png'), # Load the player image using the load_image function from utils.py
             'background': load_image('background.png'),
-            'clouds': load_images('clouds'), # Load the cloud images using the load_images function from utils.py
+            'clouds': load_images('clouds'),
+            'player/idle': Animation(load_images('entities/player/idle'), img_dur = 6),
+            'player/run': Animation(load_images('entities/player/run'), img_dur = 4),
+            'player/jump': Animation(load_images('entities/player/jump')),
+            'player/slide': Animation(load_images('entities/player/slide')),
+            'player/wall_slide': Animation(load_images('entities/player/wall_slide')),
         }
+
+      
 
         self.clouds = Clouds(self.assets['clouds'], count = 16) # create a Clouds instance with the loaded cloud images
 
