@@ -23,7 +23,7 @@ class PhysicsEntity: # A class to represent a physical entity in the game world
     def set_action(self, action): # Set the current action of the entity and update the animation accordingly
         if action != self.action: # Check if the new action is different from the current action
             self.action = action # Update the current action to the new action
-            self.animation = self.assests[self.e_type + '/' + self.action].copy() # This line of code retrieves the appropriate animation for the entity based on its type and current action.
+            self.animation = self.game.assets[self.type + '/' + self.action].copy() # This line of code retrieves the appropriate animation for the entity based on its type and current action.
 
 
     def update(self, tilemap, movement=(0, 0)): # Update the entity's position based on movement input
@@ -72,4 +72,23 @@ class PhysicsEntity: # A class to represent a physical entity in the game world
     def render(self, surf, offset = (0,0)): # Render the entity onto the given surface with an optional offset
         surf.blit(pygame.transform.flip(self.animation.img(), self.flip, False), (self.pos[0] - offset[0] + self.anim_offset[0], self.pos[1] + self.anim_offset[1] - offset[1])) # Blit the entity's current animation frame onto the surface at the entity's position adjusted by the animation offset and rendering offset. The pygame.transform.flip function is used to flip the image horizontally if the flip flag is set to True, allowing for left and right facing animations. The animation.img() method retrieves the current frame of the animation based on the entity's action and animation state.
 
+class Player(PhysicsEntity): # A class to represent the player character, inheriting from PhysicsEntity
+    def __init__(self, game, pos, size): # Initialize the player with its position and set up its assets
+        super().__init__(game, 'player', pos, size) # Call the parent class constructor to initialize the player as a PhysicsEntity with type 'player' and size (16, 16)
+        self.air_time = 0 # Initialize the player's air time to 0, which can be used to track how long the player has been in the air for purposes such as jump mechanics or fall damage calculations.
+
+    def update(self, tilemap, movement=(0, 0)): # Update the player's state based on input and collisions
+        super().update(tilemap, movement = movement) # Call the parent class update method to handle movement and collisions
+
+        self.air_time += 1 # Increment the player's air time by 1 on each update, which can be used to track how long the player has been in the air for purposes such as jump mechanics or fall damage calculations.
+        if self.collisions['down']: # If the player is colliding with the ground (i.e., standing on a surface)
+            self.air_time = 0 # Reset the air time to 0 since the player is no longer in the air
+        
+        if self.air_time > 4:
+            self.set_action('jump') # If the player has been in the air for more than 4 frames, set the action to 'jump' to trigger the jump animation
+        elif movement[0] != 0:
+            self.set_action('run') # If there is horizontal movement and the player is not in the air, set the action to 'run' to trigger the running animation
+        else:
+            self.set_action('idle') # If there is no horizontal movement and the player is not in the air, set the action to 'idle' to trigger the idle animation
+       
         

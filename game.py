@@ -5,7 +5,7 @@ import sys
 import pygame # This line imports the pygame module to actually run the game. 
 
 from scripts.utils import load_image, load_images, Animation # This line imports the load_image function from the utils.py file in the scripts folder.
-from scripts.entities import PhysicsEntity 
+from scripts.entities import PhysicsEntity, Player
 from scripts.tilemap import Tilemap
 from scripts.clouds import Clouds # This line imports the Clouds class from the clouds.py file in the scripts folder. The Clouds class is used to create and manage clouds in the game.
 
@@ -40,7 +40,7 @@ class Game: # We make the Game code into a class of its own to be called in the 
 
         self.clouds = Clouds(self.assets['clouds'], count = 16) # create a Clouds instance with the loaded cloud images
 
-        self.player = PhysicsEntity(self, 'player', (50, 50), (8, 15))  # create the player PhysicsEntity: pass game reference, entity type, starting position (x, y), and size (width, height)
+        self.player = Player(self, (50, 50), (8, 15))  # create the player PhysicsEntity: pass game reference, entity type, starting position (x, y), and size (width, height)
 
         self.tilemap = Tilemap(self, tile_size=16)
 
