@@ -35,10 +35,14 @@ class Editor: # We make the Game code into a class of its own to be called in th
 
         self.scroll = [0, 0] # initialize camera scroll values for x and y axes
 
+        self.tile_list = list(self.assets) # This line creates a list of the keys of the assets dictionary, which are the names of the assets. This will be used to display the assets in the editor and allow the user to select them for placement on the tilemap.
+        self.tile_group = 0 # This variable will be used to track the currently selected tile group for placement on the tilemap. The value of this variable will be the index of the tile group in the tile_list. For example, if the user selects the "decor" tile group, the value of this variable will be 0, since "decor" is the first key in the assets dictionary and therefore has an index of 0 in the tile_list.
+        self.tile_variant = 0 #
+
 
     def run(self): # This function makes the loop in its own function which can be called in the future
         while True:
-            self.display.blit((0,0,0)) # Fill the display surface with black color to clear the previous frame before drawing the new frame. This is necessary to prevent visual artifacts from previous frames from appearing on the screen.
+            self.display.fill((0,0,0)) # Fill the display surface with black color to clear the previous frame before drawing the new frame. This is necessary to prevent visual artifacts from previous frames from appearing on the screen.
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT: # This whole if statement is for when the user wants to quit the game. 
@@ -58,6 +62,10 @@ class Editor: # We make the Game code into a class of its own to be called in th
                         self.movement[0] = False # Set the first index of the movement list to False
                     if event.key == pygame.K_RIGHT: #` If the key released is the DOWN arrow key
                         self.movement[1] = False    # Set the second index of the movement list to False
+                    if event.key == pygame.K_UP: # If the key pressed is the UP arrow key
+                        self.movement[2] = False # Set the third index of the movement list to False
+                    if event.key == pygame.K_DOWN: # If the key pressed is the DOWN arrow key
+                        self.movement[3] = False # Set the fourth index of the movement list to False
 
             self.screen.blit(pygame.transform.scale(self.display, self.screen.get_size()), (0, 0)) 
             pygame.display.update() # Update the full display surface to the screen. This is necessary to actually see the changes made to the display surface on the screen.
