@@ -37,17 +37,26 @@ class Editor: # We make the Game code into a class of its own to be called in th
 
         self.tile_list = list(self.assets) # This line creates a list of the keys of the assets dictionary, which are the names of the assets. This will be used to display the assets in the editor and allow the user to select them for placement on the tilemap.
         self.tile_group = 0 # This variable will be used to track the currently selected tile group for placement on the tilemap. The value of this variable will be the index of the tile group in the tile_list. For example, if the user selects the "decor" tile group, the value of this variable will be 0, since "decor" is the first key in the assets dictionary and therefore has an index of 0 in the tile_list.
-        self.tile_variant = 0 #
+        self.tile_variant = 0 # This variable will be used to track the currently selected tile variant for placement on the tilemap. The value of this variable will be the index of the tile variant in the selected tile group. For example, if the user selects the "decor" tile group and then selects the second tile variant in that group, the value of this variable will be 1, since the second tile variant has an index of 1 in the list of images for the "decor" tile group in the assets dictionary.
 
 
     def run(self): # This function makes the loop in its own function which can be called in the future
         while True:
             self.display.fill((0,0,0)) # Fill the display surface with black color to clear the previous frame before drawing the new frame. This is necessary to prevent visual artifacts from previous frames from appearing on the screen.
 
+            current_tile_img = self.assets[self.tile_list[self.tile_group]][self.tile_variant] # This line gets the currently selected tile image from the assets dictionary using the tile_group and tile_variant variables to determine which tile group and variant is currently selected by the user. The tile_list is used to get the name of the tile group from the index stored in tile_group, and then that name is used to access the list of images for that tile group in the assets dictionary. Finally, the tile_variant index is used to get the specific image for the selected variant of that tile group.
+            current_tile_img.set_alpha(100) # This line sets the alpha value of the current tile image to 100, which makes it semi-transparent. This is done so that when the user is placing a tile on the tilemap, they can see the tile underneath it and get a better sense of how the new tile will fit in with the existing tiles on the map.
+
+            self.display.blit(current_tile_img, (5,5)) # This line draws the current tile image on the display surface at the position (5, 5). This is done to show the user which tile is currently selected for placement on the tilemap. The position (5, 5) is chosen to place the tile image in the top-left corner of the display surface, which is a common location for UI elements in games.
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT: # This whole if statement is for when the user wants to quit the game. 
                     pygame.quit()
                     sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN: # This whole if statement is for when the user clicks the mouse button down.
+                    if event.button == 1:
+                        clicking = True # Set the clicking variable to True when the left mouse button is pressed down. This variable will be
+                
                 if event.type == pygame.KEYDOWN: # This whole if statement is for when the user presses a key down.
                     if event.key == pygame.K_LEFT: # If the key pressed is the UP arrow key
                         self.movement[0] = True # Set the first index of the movement list to True
