@@ -39,6 +39,8 @@ class Editor: # We make the Game code into a class of its own to be called in th
         self.tile_group = 0 # This variable will be used to track the currently selected tile group for placement on the tilemap. The value of this variable will be the index of the tile group in the tile_list. For example, if the user selects the "decor" tile group, the value of this variable will be 0, since "decor" is the first key in the assets dictionary and therefore has an index of 0 in the tile_list.
         self.tile_variant = 0 # This variable will be used to track the currently selected tile variant for placement on the tilemap. The value of this variable will be the index of the tile variant in the selected tile group. For example, if the user selects the "decor" tile group and then selects the second tile variant in that group, the value of this variable will be 1, since the second tile variant has an index of 1 in the list of images for the "decor" tile group in the assets dictionary.
 
+        self.clicking = True # This variable will be used to track the clicking of the mouse button. 
+
 
     def run(self): # This function makes the loop in its own function which can be called in the future
         while True:
