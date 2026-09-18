@@ -35,12 +35,8 @@ class Tilemap:
 
 
     def render(self,surf, offset=(0,0)):
-        for x in range(offset[0] // self.tile_size, (offset[0] + surf.get_width()) // self.tile_size + 1):
-            pass  # Loop through the range of tile coordinates that are visible on the surface based on the offset and surface width
-        
-         # Render the tilemap onto the provided surface with an optional 
-        # for tile in self.offgrid_tiles:  
-            # surf.blit(self.game.assets[tile['type']][tile['variant']], (tile['pos'][0] - offset[0], tile['pos'][1] - offset[1])) # Renders offgrid tiles at their pixel positions 
+        for tile in self.offgrid_tiles:  
+            surf.blit(self.game.assets[tile['type']][tile['variant']], (tile['pos'][0] - offset[0], tile['pos'][1] - offset[1])) # Renders offgrid tiles at their pixel positions 
         
         
         for x in range(offset[0] // self.tile_size, (offset[0] + surf.get_width()) // self.tile_size + 1): # Loop through the range of tile coordinates that are visible on the surface based on the offset and surface width

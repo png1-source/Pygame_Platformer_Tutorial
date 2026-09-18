@@ -23,7 +23,7 @@ class PhysicsEntity: # A class to represent a physical entity in the game world
     def set_action(self, action): # Set the current action of the entity and update the animation accordingly
         if action != self.action: # Check if the new action is different from the current action
             self.action = action # Update the current action to the new action
-            self.animation = self.game.assets[self.type + '/' + self.action].copy() # This line of code retrieves the appropriate animation for the entity based on its type and current action.
+            self.animation = self.game.assets[self.e_type + '/' + self.action].copy() # This line of code retrieves the appropriate animation for the entity based on its type and current action.
 
 
     def update(self, tilemap, movement=(0, 0)): # Update the entity's position based on movement input
