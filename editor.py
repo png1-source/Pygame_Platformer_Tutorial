@@ -7,7 +7,7 @@ import pygame # This line imports the pygame module to actually run the game.
 from scripts.utils import load_images 
 from scripts.tilemap import Tilemap
 
-RENDER_SCALE = 2.0
+RENDER_SCALE = 2.0 # This line sets the scale factor for rendering the game. It is used to scale up the display surface to the size of the screen surface. The value of 2.0 means that the display surface will be scaled up by a factor of 2, making it twice as large as its original size. This is useful for creating a pixelated or retro look for the game, as it allows for low-resolution graphics to be displayed at a larger size without losing their sharpness or clarity.
 
 
 class Editor: # We make the Game code into a class of its own to be called in the future
@@ -39,7 +39,8 @@ class Editor: # We make the Game code into a class of its own to be called in th
         self.tile_group = 0 # This variable will be used to track the currently selected tile group for placement on the tilemap. The value of this variable will be the index of the tile group in the tile_list. For example, if the user selects the "decor" tile group, the value of this variable will be 0, since "decor" is the first key in the assets dictionary and therefore has an index of 0 in the tile_list.
         self.tile_variant = 0 # This variable will be used to track the currently selected tile variant for placement on the tilemap. The value of this variable will be the index of the tile variant in the selected tile group. For example, if the user selects the "decor" tile group and then selects the second tile variant in that group, the value of this variable will be 1, since the second tile variant has an index of 1 in the list of images for the "decor" tile group in the assets dictionary.
 
-        self.clicking = True # This variable will be used to track the clicking of the mouse button. 
+        self.clicking = False # This variable will be used to track whether the user is currently clicking the mouse button and base set at false.
+        self.right_clicking = False # This variable will be used to track whether the user is currently right clicking the mouse button and base set at false.
 
 
     def run(self): # This function makes the loop in its own function which can be called in the future
@@ -57,7 +58,13 @@ class Editor: # We make the Game code into a class of its own to be called in th
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN: # This whole if statement is for when the user clicks the mouse button down.
                     if event.button == 1:
-                        clicking = True # Set the clicking variable to True when the left mouse button is pressed down. This variable will be
+                        clicking = True # Set the clicking variable to True when the left mouse button is pressed down. 
+                    if event.button == 3:
+                        self.right_clicking = True # Set the right_clicking variable to True when the right mouse button is pressed down. 
+                    if event.button == 4:
+                        self.tile_group = (self.tile_group + 1) % len(self.tile_list) # This line increments the tile_group variable by 1 and wraps it around to 0 if it exceeds the length of the tile_list. This allows the user to cycle through the available tile groups by scrolling the mouse wheel up.
+                
+                
                 
                 if event.type == pygame.KEYDOWN: # This whole if statement is for when the user presses a key down.
                     if event.key == pygame.K_LEFT: # If the key pressed is the UP arrow key
