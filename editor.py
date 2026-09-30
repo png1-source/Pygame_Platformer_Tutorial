@@ -41,6 +41,7 @@ class Editor: # We make the Game code into a class of its own to be called in th
 
         self.clicking = False # This variable will be used to track whether the user is currently clicking the mouse button and base set at false.
         self.right_clicking = False # This variable will be used to track whether the user is currently right clicking the mouse button and base set at false.
+        self.shift = False # This variable will be used to track whether the user is currently holding down the shift key and base set at false.
 
 
     def run(self): # This function makes the loop in its own function which can be called in the future
@@ -61,11 +62,18 @@ class Editor: # We make the Game code into a class of its own to be called in th
                         clicking = True # Set the clicking variable to True when the left mouse button is pressed down. 
                     if event.button == 3:
                         self.right_clicking = True # Set the right_clicking variable to True when the right mouse button is pressed down. 
-                    if event.button == 4:
-                        self.tile_group = (self.tile_group + 1) % len(self.tile_list) # This line increments the tile_group variable by 1 and wraps it around to 0 if it exceeds the length of the tile_list. This allows the user to cycle through the available tile groups by scrolling the mouse wheel up.
-                
-                
-                
+                    if self.shift: # This whole if statement is for when the user is holding down the shift key and clicks the mouse button down. 
+                        if event.button == 4:
+                            self.tile_group = (self.tile_group - 1) % len(self.tile_list) # This line increments the tile_group variable by 1 and wraps it around to 0 if it exceeds the length of the tile_list. This allows the suer to cycle through the available tile groups by scrolling the mouse wheel up. The modulo operator (%) is used to ensure that the value of tile_group stays within the valid range of indices for the tile_list. 
+                        if event.button == 5:
+                            self.tile_group = (self.tile_group + 1) % len(self.tile_list) # This line increments the tile_group variable by 1 and wraps it around to 0 if it exceeds the length of the tile_list. This allows the suer to cycle through the available tile groups by scrolling the mouse wheel down. The modulo operator (%) is used to ensure that the value of tile_group stays within the valid range of indices for the tile_list. 
+                    else:
+                        if event.button == 4:
+                            self.tile_variant = (self.tile_variant - 1) % len(self.assets[self.tile_list[self.tile_group]]) # This line increments the tile_variant variable by 1 and wraps it around to 0 if it exceeds the length of the list of images for the currently selected tile group. This allows the user to cycle through the available tile variants for the currently selected tile group by scrolling the mouse wheel up. The modulo operator (%) is used to ensure that the value of tile_variant stays within the valid range of indices for the list of images for the currently selected tile group.
+                        if event.button == 5:
+                            self.tile_variant = (self.tile_variant + 1) % len(self.assets[self.tile_list[self.tile_group]]) # This line increments the tile_variant variable by 1 and wraps it around to 0 if it exceeds the length of the list of images for the currently selected tile group. This allows the user to cycle through the available tile variants for the currently selected tile group by scrolling the mouse wheel down. The modulo operator (%) is used to ensure that the value of tile_variant stays within the valid range of indices for the list of images for the currently selected tile group.
+
+
                 if event.type == pygame.KEYDOWN: # This whole if statement is for when the user presses a key down.
                     if event.key == pygame.K_LEFT: # If the key pressed is the UP arrow key
                         self.movement[0] = True # Set the first index of the movement list to True
@@ -75,6 +83,8 @@ class Editor: # We make the Game code into a class of its own to be called in th
                         self.movement[2] = True # Set the third index of the movement list to True
                     if event.key == pygame.K_DOWN: # If the key pressed is the DOWN arrow key
                         self.movement[3] = True # Set the fourth index of the movement list to True
+                    if event.key == pygame.K_LSHIFT: # If the key pressed is the LEFT SHIFT key
+                        self.shift = True # Set the shift variable to True when the LEFT SHIFT key is pressed down. This is done to allow the user to place tiles without holding down the shift key, which is useful for quickly placing multiple tiles in a row or column. The shift variable is used to determine whether the user is currently holding down the shift key, and setting it to True when the key is pressed down allows the user to place tiles without having to hold down the shift key.
                 if event.type == pygame.KEYUP: # This whole if statement is for when the user releases a key.
                     if event.key == pygame.K_LEFT: # If the key released is the UP arrow key
                         self.movement[0] = False # Set the first index of the movement list to False
